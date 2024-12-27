@@ -2,6 +2,7 @@
 
 require "../helpers.php";
 
-require basePath("view/home.php");
+$uri=$_SERVER["REQUEST_URI"];
 
+require basePath("router.php");
 ?>
