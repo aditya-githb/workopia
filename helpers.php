@@ -21,11 +21,13 @@ function basePath($path = '')
  * 
  */
 
-function loadView($name)
+function loadView($name, $data = [])
 {
    $base_path = basePath("view/{$name}.php");
-   if (file_exists($base_path)) require $base_path;
-   else echo "Path $name.php does not exist";
+   if (file_exists($base_path)) {
+      extract($data);
+      require $base_path;
+   } else echo "Path $name.php does not exist";
 }
 
 /**
@@ -39,8 +41,9 @@ function loadView($name)
 function loadPartial($name)
 {
    $base_path = basePath("view/partials/{$name}.php");
-   if (file_exists($base_path)) require $base_path;
-   else echo "Path $name.php does not exist";
+   if (file_exists($base_path)) {
+      require $base_path;
+   } else echo "Path $name.php does not exist";
 }
 
 /**
@@ -70,3 +73,15 @@ function inspectDie($value)
    var_dump($value);
    echo "</pre>";
 }
+
+/**
+ * Format Salary
+ * 
+ * @param string $salary
+ * @return string Formatted Salary 
+ */
+
+ function formatSalary($salary)
+ {
+    return "₹".number_format(floatval($salary));
+ }
