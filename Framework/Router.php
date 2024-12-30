@@ -1,5 +1,8 @@
 <?php
 
+
+namespace Framework;
+
 // $routes =  require basePath("routes.php");
 
 // if (array_key_exists($uri, $routes)) {
@@ -20,14 +23,16 @@ class Router
      * 
      * @param string $method
      * @param string $uri
-     * @param string $controller
+     * @param string $action
      */
-    public function registerRoute($method, $uri, $controller)
+    public function registerRoute($method, $uri, $action)
     {
+        list($controller, $controllerMethod) = explode('@', $action);
         $this->routes[] = [
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
+            'controllerMethod' => $controllerMethod,
         ];
     }
 
@@ -86,7 +91,8 @@ class Router
      * @param int $httpStatus
      * @return void
      */
-    public function error($httpStatus = 404){
+    public function error($httpStatus = 404)
+    {
         http_response_code($httpStatus);
         loadView("error/$httpStatus");
         exit;
@@ -104,7 +110,11 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === $method) {
-                require basePath($route["controller"]);
+                $controller = 'App\\Controllers\\' . $route['controller'];
+                $controllerMethod = $route['controllerMethod'];
+
+                $controllerInstance = new $controller();
+                $controllerInstance->$controllerMethod();
                 return;
             }
         }

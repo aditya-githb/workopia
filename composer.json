@@ -1,0 +1,16 @@
+{
+    "name": "aditya-githb/workopia",
+    "description": "Job Listing Platform",
+    "author": [
+        {
+            "name": "Aditya",
+            "email": "adityakumarshaw9@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "framework/",
+            "App\\": "app/"
+        }
+    }
+}

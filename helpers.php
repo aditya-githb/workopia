@@ -23,7 +23,7 @@ function basePath($path = '')
 
 function loadView($name, $data = [])
 {
-   $base_path = basePath("view/{$name}.php");
+   $base_path = basePath("App/view/{$name}.php");
    if (file_exists($base_path)) {
       extract($data);
       require $base_path;
@@ -40,7 +40,7 @@ function loadView($name, $data = [])
 
 function loadPartial($name)
 {
-   $base_path = basePath("view/partials/{$name}.php");
+   $base_path = basePath("App/view/partials/{$name}.php");
    if (file_exists($base_path)) {
       require $base_path;
    } else echo "Path $name.php does not exist";
