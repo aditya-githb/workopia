@@ -86,3 +86,9 @@ function inspectDie($value)
  {
     return "₹".number_format(floatval($salary));
  }
+
+ function sanitize($dirty)
+ {
+
+    return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
+ }
