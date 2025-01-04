@@ -16,7 +16,7 @@ class ListingController
 
     /**
      * Show Listing
-     * 
+     * @param array $params
      * @return void
      */
 
@@ -73,7 +73,7 @@ class ListingController
         $newListingData['user_id'] = 1;
         $newListingData = array_map('sanitize', $newListingData);
 
-        $requiredFeilds = ['title', 'description', 'city', 'state', 'email'];
+        $requiredFeilds = ['title', 'description', 'salary', 'city', 'state', 'email'];
 
         $errors = [];
         foreach ($requiredFeilds as $field) {
@@ -84,7 +84,93 @@ class ListingController
         if (!empty($errors)) {
             loadView('listings/create', ['errors' => $errors, "newListingData" => $newListingData]);
         } else {
-            echo "DATA SUBBMITTED";
+
+            $fields = [];
+            $value = [];
+
+            foreach ($newListingData as $field => $value) {
+                $fields[] = $field;
+                if ($value === '') {
+                    $newListingData[$field] = null;
+                }
+                $values[] = ':' . $field;
+            }
+
+            $fields = implode(", ", $fields);
+            $values = implode(", ", $values);
+
+            $this->db->query("INSERT INTO listings ($fields) VALUES ($values)", $newListingData);
+            redirect('/listings');
+        }
+    }
+
+    /**
+     * Delete Listing
+     * 
+     * @param mixed $param
+     * @return void
+     */
+    function destroy($params)
+    {
+        $id = $params['id'];
+        $params = [
+            'id' => $id,
+        ];
+
+        $fetchedID = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
+        if (!$fetchedID) {
+            return ErrorController::notFound("Listing not found");
+        } else {
+            $this->db->query("DELETE FROM listings WHERE id = :id", $params);
+            $_SESSION['message_error'] = "Listing deleted successfully";
+            redirect('/listings');
+        }
+    }
+
+    /**
+     * show edit
+     * @param array $params
+     * @return void
+     */
+
+
+    function edit($params)
+    {
+        $id = $params['id'] ?? "";
+        $params = [
+            'id' => $id,
+        ];
+        $listing = $this->db->query("SELECT * FROM listings WHERE id = $id")->fetch();
+
+        if (!$listing) {
+            return ErrorController::notFound("Listing not found");
+        }
+
+        loadView('listings/edit', [
+            'listingData' => $listing,
+        ]);
+    }
+
+    /**
+     * Update Listing
+     * 
+     * @param array $params
+     * @return void
+     */
+
+    function update($params)
+    {
+        $id = $params['id'] ?? "";
+        $params = [
+            'id' => $id,
+        ];
+        $listing = $this->db->query("SELECT * FROM listings WHERE id = $id")->fetch();
+
+        if (!$listing) {
+            return ErrorController::notFound("Listing not found");
+        }
+        else{
+            $this->;
         }
     }
 }

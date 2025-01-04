@@ -25,14 +25,14 @@
           name="title"
           placeholder="Job Title"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["title"] ?? "" ?>" />
+          value="<?= $listingData->title ?? "" ?>" />
       </div>
       <div class="mb-4">
         <textarea
           name="description"
           placeholder="Job Description"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          ><?=$newListingData["description"]??""?></textarea>
+          ><?=$listingData  ->description ??""?></textarea>
       </div>
       <div class="mb-4">
         <input
@@ -40,7 +40,7 @@
           name="salary"
           placeholder="Annual Salary"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["salary"] ?? "" ?>" />
+          value="<?= $listingData->salary ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -48,7 +48,7 @@
           name="requirements"
           placeholder="Requirements"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["requirements"] ?? "" ?>" />
+          value="<?= $listingData->requirements ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -56,7 +56,7 @@
           name="benefits"
           placeholder="Benefits"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["benefits"] ?? "" ?>" />
+          value="<?= $listingData->benefits ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -64,7 +64,7 @@
           name="tags"
           placeholder="Tags"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["tags"] ?? "" ?>" />
+          value="<?= $listingData->tags ?? "" ?>" />
       </div>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
         Company Info & Location
@@ -75,7 +75,7 @@
           name="company"
           placeholder="Company Name"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["company"] ?? "" ?>" />
+          value="<?= $listingData->company ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -83,7 +83,7 @@
           name="address"
           placeholder="Address"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["address"] ?? "" ?>" />
+          value="<?= $listingData->address ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -91,7 +91,7 @@
           name="city"
           placeholder="City"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["city"] ?? "" ?>" />
+          value="<?= $listingData->city ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -99,7 +99,7 @@
           name="state"
           placeholder="State"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["state"] ?? "" ?>" />
+          value="<?= $listingData->state ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -107,7 +107,7 @@
           name="phone"
           placeholder="Phone"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["phone"] ?? "" ?>" />
+          value="<?= $listingData->phone ?? "" ?>" />
       </div>
       <div class="mb-4">
         <input
@@ -115,14 +115,14 @@
           name="email"
           placeholder="Email Address For Applications"
           class="w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?= $newListingData["email"] ?? "" ?>" />
+          value="<?= $listingData->email ?? "" ?>" />
       </div>
       <button
         class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 my-3 rounded focus:outline-none">
         Save
       </button>
       <a
-        href="/"
+        href="/listings/<?= $listingData->id ?>"
         class="block text-center w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none">
         Cancel
       </a>

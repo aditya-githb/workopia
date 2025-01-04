@@ -82,13 +82,31 @@ function inspectDie($value)
  * @return string Formatted Salary 
  */
 
- function formatSalary($salary)
- {
-    return "₹".number_format(floatval($salary));
- }
+function formatSalary($salary)
+{
+   return "₹" . number_format(floatval($salary));
+}
 
- function sanitize($dirty)
- {
+/**
+ * Sanitize
+ * 
+ * @param string $dirty
+ * @return string Cleaned string
+ */
 
-    return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
- }
+function sanitize($dirty)
+{
+
+   return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
+}
+
+/**
+ * Redirect
+ * 
+ * @param string $url
+ * @return void
+ */
+function redirect($url){
+   header("Location: $url");
+   exit();
+}
