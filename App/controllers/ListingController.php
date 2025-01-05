@@ -168,9 +168,38 @@ class ListingController
 
         if (!$listing) {
             return ErrorController::notFound("Listing not found");
-        }
-        else{
-            $this->;
+        } else {
+            $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+
+            $updatedValues = array_intersect_key($_POST, array_flip($allowedFields));
+
+            $updatedValues = array_map('sanitize', $updatedValues);
+
+            $requiredFeilds = ['title', 'description', 'salary', 'city', 'state', 'email'];
+
+            $error = [];
+
+            foreach ($requiredFeilds as $field) {
+                if (empty($updatedValues[$field]) || !Validation::string($updatedValues[$field])) {
+                    $error[$field] = ucfirst($field) . " is required";
+                }
+            }
+            if (!empty($errors)) {
+                loadView('listings/edit', ['errors' => $errors, "listingData" => $listing]);
+            }
+            else {
+                $updatedFields=[];
+                foreach(array_keys($updatedValues) as $field){
+                    $updatedFields[] = "$field = :$field";
+                }
+                $updatedFields = implode(", ", $updatedFields);
+                $sql = "UPDATE listings SET $updatedFields WHERE id = :id";
+                $params = array_merge($params, $updatedValues);
+
+                $this->db->query($sql, $params);
+                $_SESSION['message_success'] = "Listing updated successfully";
+                redirect('/listings/'. $id);               
+            }
         }
     }
 }
