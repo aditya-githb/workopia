@@ -13,11 +13,8 @@
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
         Job Info
       </h2>
-      <?php if (isset($errors)) {
-        foreach ($errors as $err) {
-          echo "<div class='message bg-red-100 p-3 my-3'>$err</div>";
-        }
-      }
+      <?php
+      loadPartial("error", ["errors" => $errors ?? []]);
       ?>
       <div class="mb-4">
         <input
@@ -31,8 +28,7 @@
         <textarea
           name="description"
           placeholder="Job Description"
-          class="w-full px-4 py-2 border rounded focus:outline-none"
-          ><?=$newListingData["description"]??""?></textarea>
+          class="w-full px-4 py-2 border rounded focus:outline-none"><?= $newListingData["description"] ?? "" ?></textarea>
       </div>
       <div class="mb-4">
         <input

@@ -175,17 +175,17 @@ class ListingController
 
             $updatedValues = array_map('sanitize', $updatedValues);
 
-            $requiredFeilds = ['title', 'description', 'salary', 'city', 'state', 'email'];
+            $requiredFields = ['title', 'description', 'salary', 'city', 'state', 'email'];
 
             $error = [];
 
-            foreach ($requiredFeilds as $field) {
+            foreach ($requiredFields as $field) {
                 if (empty($updatedValues[$field]) || !Validation::string($updatedValues[$field])) {
                     $error[$field] = ucfirst($field) . " is required";
                 }
             }
-            if (!empty($errors)) {
-                loadView('listings/edit', ['errors' => $errors, "listingData" => $listing]);
+            if (!empty($error)) {
+                loadView('listings/edit', ['errors' => $error, "listingData" => $listing]);
             }
             else {
                 $updatedFields=[];
