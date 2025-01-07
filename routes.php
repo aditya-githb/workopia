@@ -23,6 +23,7 @@ $router->delete('/listings/{id}', 'ListingController@destroy');
 $router->get('/auth/register', 'UserController@register');
 $router->get('/auth/login', 'UserController@login');
 $router->post('/auth/register', 'UserController@store');
+$router->post('/auth/logout', 'UserController@logout');
 
 
 
