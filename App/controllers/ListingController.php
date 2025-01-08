@@ -2,7 +2,9 @@
 
 namespace App\controllers;
 
+use Framework\Authorization;
 use Framework\Database;
+use Framework\Session;
 use Framework\Validation;
 
 class ListingController
@@ -70,7 +72,7 @@ class ListingController
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
-        $newListingData['user_id'] = 1;
+        $newListingData['user_id'] = Session::get('user')['id'];
         $newListingData = array_map('sanitize', $newListingData);
 
         $requiredFeilds = ['title', 'description', 'salary', 'city', 'state', 'email'];
@@ -117,10 +119,14 @@ class ListingController
             'id' => $id,
         ];
 
-        $fetchedID = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
-        if (!$fetchedID) {
+        $listing = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
+        if (!$listing) {
             return ErrorController::notFound("Listing not found");
         } else {
+            if(!Authorization::isOwner($listing->user_id)){
+                $_SESSION ['message_error'] = "You are not authorized to delete this listing";
+                return redirect('/listings/'. $listing->id);
+            }
             $this->db->query("DELETE FROM listings WHERE id = :id", $params);
             $_SESSION['message_error'] = "Listing deleted successfully";
             redirect('/listings');
@@ -140,10 +146,14 @@ class ListingController
         $params = [
             'id' => $id,
         ];
-        $listing = $this->db->query("SELECT * FROM listings WHERE id = $id")->fetch();
+        $listing = $this->db->query("SELECT * FROM listings WHERE id = $id ORDER BY created_at DESC")->fetch();
 
         if (!$listing) {
             return ErrorController::notFound("Listing not found");
+        }
+        if(!Authorization::isOwner($listing->user_id)){
+            $_SESSION ['message_error'] = "You are not authorized to edit this listing";
+            return redirect('/listings/'. $listing->id);
         }
 
         loadView('listings/edit', [

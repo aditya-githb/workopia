@@ -99,7 +99,7 @@ class UserController
                 );
                 exit;
             }
-            $params =[
+            $params = [
                 'name' => $name,
                 'email' => $email,
                 'city' => $city ?? null,
@@ -112,7 +112,7 @@ class UserController
             // Get new user ID
             $user = $this->db->conn->lastInsertId();
 
-            Session::set('user',[
+            Session::set('user', [
                 'id' => $user,
                 'name' => $name,
                 'email' => $email,
@@ -120,8 +120,7 @@ class UserController
                 'state' => $state,
             ]);
 
-            redirect('/auth/login');
-
+            redirect('/');
         }
     }
 
@@ -131,12 +130,62 @@ class UserController
      * @return void
      */
 
-    function logout(){
+    function logout()
+    {
         Session::destroy('user');
         $params = session_get_cookie_params();
         setcookie('PHPSESSID', '', time() - 86400, $params['path'], $params['domain']);
 
         redirect('/');
+    }
 
+    /**
+     * Authenticate user
+     * 
+     * @return void
+     */
+    public function authenticate()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $error = [];
+
+        if (!Validation::email($email)) {
+            $error['email'] = 'Please enter a valid email address';
+        }
+        if (!Validation::string($password, 8, 50)) {
+            $error['password'] = 'Password length should be 8 or more';
+        }
+        if (!empty($error)) {
+            loadView('users/login', ['error' => $error]);
+            exit;
+        }
+
+        $params = [
+            'email' => $email,
+        ];
+
+        $user = $this->db->query("SELECT * FROM users WHERE email = :email", $params)->fetch();
+        if ($user) {
+            if (!password_verify($password, $user->password)) {
+                $error['email'] = 'Incorrect email or password';
+                loadView('users/login', ['error' => $error]);
+                exit;
+            }
+            Session::set('user', [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'city' => $user->city,
+                'state' => $user->state,
+            ]);
+            redirect('/');
+        }
+        $error['email'] = 'Incorrect email or password';
+        loadView('users/login', ['error' => $error]);
+        exit;
+
+        redirect('/');
     }
 }
