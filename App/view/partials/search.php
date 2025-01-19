@@ -4,7 +4,7 @@
       <div class="overlay"></div>
       <div class="container mx-auto text-center z-10">
         <h2 class="text-4xl text-white font-bold mb-4">Find Your Dream Job</h2>
-        <form method='get' class="mb-4 block mx-5 md:mx-auto" action="/listings/search">
+        <form method='GET' class="mb-4 block mx-5 md:mx-auto" action="/listings/search">
           <input
             type="text"
             name="keywords"

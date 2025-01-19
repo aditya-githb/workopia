@@ -245,6 +245,10 @@ class ListingController
 
         $listings = $this->db->query($query, $params)->fetchAll();
 
-        loadView('/listings/index',["listings" => $listings]);
+        loadView('/listings/index',[
+            "listings" => $listings,
+            "keywords" => $keywords,
+            "location" => $location
+        ]);
     }
 }
